@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-
 import { Switch, Route, withRouter } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
 
-import './App.css';
 import Header from './components/Header';
 import WelcomePage from './components/WelcomePage';
 import QuizPage from './components/QuizPage';
@@ -10,6 +9,12 @@ import UserPage from './components/UserPage';
 import PrivateRoute from './PrivateRoute';
 
 import { getLoggedUser, login, logout } from './Auth';
+
+const styles = theme => ({
+  app: {
+    textAlign: 'center'
+  }
+});
 
 class App extends Component {
 
@@ -46,8 +51,9 @@ class App extends Component {
   render() {
     const username = this.state.username;
     const isLoggedIn = !!username;
+    const { classes } = this.props;
     return (
-      <div className="App">
+      <div className={classes.app}>
         <Header />
         <Switch>
           <Route path="/" exact render={(props) => (
@@ -86,4 +92,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default withStyles(styles)(withRouter(App));
