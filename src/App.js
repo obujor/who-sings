@@ -17,14 +17,9 @@ const styles = theme => ({
 });
 
 class App extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      username: getLoggedUser() || '',
-    };
-  }
+  state = {
+    username: getLoggedUser() || '',
+  };
 
   startGame = () => {
     this.props.history.push('/quiz');
@@ -69,9 +64,7 @@ class App extends Component {
             loginPath="/"
             isLoggedIn={isLoggedIn}
             render={() => (
-              <QuizPage
-                nrQuestions={5}
-              />
+              <QuizPage />
             )}
           />
           <PrivateRoute
