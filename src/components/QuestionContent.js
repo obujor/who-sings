@@ -17,7 +17,7 @@ const QuestionContent = ({ classes, content }) =>
   <Typography
     className={classes.question}
     color="primary"
-    variant="h3"
+    variant="h5"
   >
     {content}
   </Typography>

@@ -61,7 +61,7 @@ class QuizPage extends React.Component {
           <div>
             <Typography
               className={classes.question}
-              variant="h3"
+              variant="h4"
             >
               Your score is: {totalScore}
             </Typography>
