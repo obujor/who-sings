@@ -7,12 +7,12 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import ConfirmDialog from './ConfirmDialog';
+import PlayedQuizList from './PlayedQuizList';
+
 
 const styles = theme => ({
   root: {
@@ -30,7 +30,7 @@ const styles = theme => ({
     justifyContent: 'center',
   },
   avatar: {
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.primary.main
   }
 });
 
@@ -56,27 +56,17 @@ class UserPage extends React.Component {
 
   render () {
     const { classes, username, playedQuizzes, lastQuizzesNr } = this.props;
-    const userFirstLetter = username.charAt(0).toUpperCase();
     const { confirmDialogOpen } = this.state;
-    const timestampToDateStr = (timestamp) => {
-      const date = new Date(timestamp);
-      const dateStr = date.toDateString();
-      const timeStr = date.toTimeString().substring(0, 9);
-      return `${dateStr}, ${timeStr}`;
-    }
     const usersQuizzes = playedQuizzes
                           .filter(quiz => quiz.username === username)
-                          .slice(0, lastQuizzesNr)
-                          .map(quiz => Object.assign(quiz, {
-                            datetime: timestampToDateStr(quiz.timestamp)
-                          }));
+                          .slice(0, lastQuizzesNr);
     return (
       <div className={classes.root}>
         <Card className={classes.card}>
           <CardHeader
             avatar={
               <Avatar className={classes.avatar}>
-                {userFirstLetter}
+                <AccountCircle />
               </Avatar>
             }
             action={
@@ -88,7 +78,7 @@ class UserPage extends React.Component {
             }
             title={username}
             titleTypographyProps={{
-              variant: 'h6'
+              variant: 'h5'
             }}
           />
           <CardContent>
@@ -98,23 +88,11 @@ class UserPage extends React.Component {
                   color="primary"
                   variant="h5"
                 >
-                  Last played games
+                  Your last played games
                 </Typography>
-                <List>
-                  {usersQuizzes.map(({ score, timestamp, datetime }) =>
-                    <ListItem
-                      key={timestamp}
-                    >
-                      <Avatar>
-                        {score}
-                      </Avatar>
-                      <ListItemText
-                        primary={`Score: ${score}`}
-                        secondary={datetime}
-                      />
-                    </ListItem>
-                  )}
-                </List>
+                <PlayedQuizList
+                  quizzesList={usersQuizzes}
+                />
               </div>
             ) : (
               <Typography
