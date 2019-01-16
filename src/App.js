@@ -9,6 +9,7 @@ import UserPage from './components/UserPage';
 import PrivateRoute from './PrivateRoute';
 
 import { getLoggedUser, login, logout } from './Auth';
+import { getPlayedQuizzes, savePlayedQuizzes } from './Storage';
 
 const styles = theme => ({
   app: {
@@ -19,6 +20,7 @@ const styles = theme => ({
 class App extends Component {
   state = {
     username: getLoggedUser() || '',
+    playedQuizzes: getPlayedQuizzes() || []
   };
 
   startGame = () => {
@@ -37,14 +39,27 @@ class App extends Component {
         logout();
       }
     }
+    if (prevState.playedQuizzes !== this.state.playedQuizzes) {
+      savePlayedQuizzes(this.state.playedQuizzes);
+    }
   }
 
   onLogout = () => {
     this.setUsername('');
   }
 
+  onQuizFinished = (score) => {
+    this.setState((state) => ({
+      playedQuizzes: [{
+        username: state.username,
+        score: score,
+        timestamp: Date.now()
+      }, ...state.playedQuizzes]
+    }));
+  }
+
   render() {
-    const username = this.state.username;
+    const { username, playedQuizzes } = this.state;
     const isLoggedIn = !!username;
     const { classes } = this.props;
     return (
@@ -64,7 +79,9 @@ class App extends Component {
             loginPath="/"
             isLoggedIn={isLoggedIn}
             render={() => (
-              <QuizPage />
+              <QuizPage
+                onQuizFinished={this.onQuizFinished}
+              />
             )}
           />
           <PrivateRoute
@@ -76,6 +93,8 @@ class App extends Component {
               <UserPage
                 username={username}
                 logout={this.onLogout}
+                playedQuizzes={playedQuizzes}
+                lastQuizzesNr={10}
               />
             )}
           />

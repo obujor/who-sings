@@ -33,6 +33,7 @@ class QuizPage extends React.Component {
     this.setState({
       quizFinished: true
     });
+    this.props.onQuizFinished(this.state.totalScore);
   };
 
   onScore = (score) => {
