@@ -6,6 +6,7 @@ import Header from './components/Header';
 import WelcomePage from './components/WelcomePage';
 import QuizPage from './components/QuizPage';
 import UserPage from './components/UserPage';
+import LeaderboardPage from './components/LeaderboardPage'
 import PrivateRoute from './PrivateRoute';
 
 import { getLoggedUser, login, logout } from './Auth';
@@ -71,6 +72,13 @@ class App extends Component {
               startGame={this.startGame}
               setUsername={this.setUsername}
               username={username}
+            />
+          )}/>
+          <Route path="/leaderboard" exact render={(props) => (
+            <LeaderboardPage
+              username={username}
+              playedQuizzes={playedQuizzes}
+              lastQuizzesNr={10}
             />
           )}/>
           <PrivateRoute

@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Score from '@material-ui/icons/Score';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -32,6 +33,14 @@ const Header = ({ classes }) =>
           to="/"
         >
           <PlayArrow />
+        </IconLinkButton>
+      </Tooltip>
+      <Tooltip title="Leaderboard">
+        <IconLinkButton
+          color="inherit"
+          to="/leaderboard"
+        >
+          <Score />
         </IconLinkButton>
       </Tooltip>
       <Tooltip title="User">
