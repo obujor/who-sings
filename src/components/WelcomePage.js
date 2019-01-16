@@ -50,21 +50,21 @@ class WelcomePage extends React.Component {
     const canStart = !!(loggedUsername || username);
     return (
       <div className={classes.root}>
-        <Typography variant="h4" color="inherit">
-          you have to guess...
+        <Typography variant="h6" color="inherit">
+          This is a quiz game in which you have to guess the singer from a line of the song lyrics.
         </Typography>
         {loggedUsername ? (
           <div>
-            <Typography variant="h4" color="inherit">
+            <Typography variant="h6" color="inherit">
               Welcome back
             </Typography>
-            <Typography variant="h4" color="primary">
+            <Typography variant="h5" color="primary">
               {loggedUsername}
             </Typography>
           </div>
         ) : (
           <div>
-            <Typography variant="h5" color="inherit">
+            <Typography variant="h6" color="primary">
               Insert your name
             </Typography>
             <TextField
