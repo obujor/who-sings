@@ -16,15 +16,8 @@ const styles = theme => ({
 });
 
 class WelcomePage extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.handleStart = this.handleStart.bind(this);
-
-    this.state = {
-      username: '',
-    };
+  state = {
+    username: '',
   }
 
   setUsername = event => {
@@ -33,7 +26,7 @@ class WelcomePage extends React.Component {
     });
   }
 
-  handleStart() {
+  handleStart = () => {
     const { startGame, setUsername } = this.props;
     if (this.state.username) {
       setUsername(this.state.username);

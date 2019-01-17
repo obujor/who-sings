@@ -24,7 +24,7 @@ class AnswerList extends React.Component {
     const { selectedId } = this.state;
     return (
       <List>
-        {answers.map(({ answer}, id) =>
+        {answers.map((answer, id) =>
           <Answer
             key={id}
             answer={answer}

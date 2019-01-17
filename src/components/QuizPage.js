@@ -49,8 +49,9 @@ class QuizPage extends React.Component {
       <div className={classes.root}>
         {!quizFinished &&
           <Quiz
-            timeoutSec={5}
+            timeoutSec={10}
             nrQuestions={5}
+            answersNr={3}
             onFinished={this.onQuizFinished}
             onScore={this.onScore}
             totalScore={totalScore}
