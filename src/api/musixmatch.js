@@ -12,7 +12,6 @@ export const fetchQuestion = (answersNr) => {
         getRandomLineLyrics(track_id),
         getChartRandomArtistNames(answersNr-1, artist_id)
       ]).then(([lyricData, artists]) => {
-        console.log(lyricData, artists);
         const answers = shuffle([...artists, artist_name]);
         const correctAnswer = answers.indexOf(artist_name);
         resolve({
@@ -21,8 +20,8 @@ export const fetchQuestion = (answersNr) => {
           answers,
           correctAnswer
         })
-      });
-    });
+      }).catch(reject);
+    }).catch(reject);
   });
   // Return mock data
   // return new Promise((resolve, reject) => setTimeout(() => resolve({
@@ -97,14 +96,30 @@ const getRandomLineLyrics = (trackId) => {
 }
 
 const jsonpPromise = (url) => {
-  return new Promise((resolve, reject) => {
-    jsonp(url, null, (err, data) => {
-      if (err) {
-        return reject(err.message);
-      }
-      resolve(data);
-    });
+  // jsonp lib is not handling HTTP errors
+  // https://github.com/webmodules/jsonp/issues/22
+  // implement kind of error handling by waiting and
+  // throw an error if the callback was not called
+  const requestPromise = new Promise((resolve, reject) => {
+                          jsonp(url, null, (err, data) => {
+                            if (err) {
+                              return reject(err.message);
+                            }
+                            resolve(data);
+                          });
+                        });
+  const timerPromise = new Promise((resolve) => {
+    setTimeout(resolve, 5000);
   });
+
+  return Promise.race([requestPromise, timerPromise])
+          .then((val) => {
+            if (val) {
+              return val;
+            } else {
+              throw new Error('timeout exceeded')
+            }
+          });
 }
 
 const shuffle = (a) => {
@@ -117,7 +132,6 @@ const shuffle = (a) => {
 
 const getRandomItem = (items, returnIndex=false) => {
   const index = Math.floor(Math.random()*items.length);
-  console.log(index);
   return returnIndex ? index : items[index];
 }
 

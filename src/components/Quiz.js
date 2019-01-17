@@ -1,6 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
 
 import Question from './Question';
 import { fetchQuestion } from '../api/musixmatch';
@@ -21,6 +22,7 @@ class Quiz extends React.Component {
     currentQuestion: -1,
     questions: [],
     isLoading: false,
+    requestError: false,
   }
 
   componentDidMount() {
@@ -37,8 +39,16 @@ class Quiz extends React.Component {
       fetchQuestion(this.props.answersNr)
         .then((question) => {
           this.setState((state) => ({
-            questions: [...state.questions, question]
+            questions: [...state.questions, question],
+            requestError: false
           }), resolve);
+        })
+        .catch((err) => {
+          console.error(err);
+          this.setState({
+            requestError: true
+          });
+          reject(err);
         });
     });
   }
@@ -81,7 +91,7 @@ class Quiz extends React.Component {
       timeoutSec,
       totalScore
     } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, requestError } = this.state;
 
     const currectQuestionNr = this.state.currentQuestion+1;
     const question = currectQuestionNr && this.state.questions[this.state.currentQuestion];
@@ -91,7 +101,16 @@ class Quiz extends React.Component {
         {isLoading &&
           <CircularProgress className={classes.progress} />
         }
-        {!isLoading && question &&
+        {requestError &&
+          <Typography
+            component="div"
+            variant="h5"
+            color="secondary"
+          >
+            There's an error in the calling of Musixmatch API, try later please.
+          </Typography>
+        }
+        {!isLoading && !requestError && question &&
           <Question
             key={currectQuestionNr}
             title={title}
