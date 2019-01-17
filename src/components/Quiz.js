@@ -34,7 +34,7 @@ class Quiz extends React.Component {
 
   addQuestion() {
     return new Promise((resolve, reject) => {
-      fetchQuestion()
+      fetchQuestion(this.props.answersNr)
         .then((question) => {
           this.setState((state) => ({
             questions: [...state.questions, question]
@@ -100,6 +100,7 @@ class Quiz extends React.Component {
             currectQuestionNr={currectQuestionNr}
             content={question.content}
             answers={question.answers}
+            copyright={question.copyright}
             correctAnswerId={question.correctAnswer}
             totalScore={totalScore}
             onAnswer={this.onAnswer}

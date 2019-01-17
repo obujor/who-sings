@@ -25,6 +25,7 @@ const styles = theme => ({
   actions: {
     display: 'flex',
     justifyContent: 'center',
+    flexDirection: 'column'
   },
 });
 
@@ -83,6 +84,7 @@ class Question extends React.Component {
       content,
       title,
       answers,
+      copyright,
       correctAnswerId,
       timeoutSec,
       classes,
@@ -94,7 +96,6 @@ class Question extends React.Component {
       secondsLeft,
       answered
     } = this.state;
-
     const answerUrgencyLevel = secondsLeft/timeoutSec;
     const cardElevation = answered ? 10 : 2;
 
@@ -135,11 +136,16 @@ class Question extends React.Component {
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           <Typography
-            className={classes.question}
-            component="span"
+            component="div"
             variant="h5"
           >
             Score: {totalScore}
+          </Typography>
+          <Typography
+            component="div"
+            variant="caption"
+          >
+            {copyright}
           </Typography>
         </CardActions>
       </Paper>
