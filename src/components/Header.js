@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Score from '@material-ui/icons/Score';
-import PlayArrow from '@material-ui/icons/PlayArrow';
+import QueueMusic from '@material-ui/icons/QueueMusic';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import IconLinkButton from './IconLinkButton';
@@ -32,7 +32,7 @@ const Header = ({ classes }) =>
           color="inherit"
           to="/"
         >
-          <PlayArrow />
+          <QueueMusic />
         </IconLinkButton>
       </Tooltip>
       <Tooltip title="Leaderboard">
