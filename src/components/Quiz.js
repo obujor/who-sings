@@ -4,7 +4,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 
 import Question from './Question';
-import { fetchQuestion } from '../api/musixmatch';
+import { fetchQuestions } from '../api/musixmatch';
 
 const styles = theme => ({
   root: {
@@ -27,21 +27,22 @@ class Quiz extends React.Component {
 
   componentDidMount() {
     this.setState({isLoading: true});
-    this.addQuestion()
+    this.addQuestions()
       .finally(() => this.setState({
         isLoading: false,
         currentQuestion: 0
       }));
   }
 
-  addQuestion() {
+  addQuestions() {
+    const { nrQuestions, answersNr } = this.props;
     return new Promise((resolve, reject) => {
-      fetchQuestion(this.props.answersNr)
-        .then((question) => {
-          this.setState((state) => ({
-            questions: [...state.questions, question],
+      fetchQuestions(nrQuestions, answersNr)
+        .then((questions) => {
+          this.setState({
+            questions: [...questions],
             requestError: false
-          }), resolve);
+          }, resolve);
         })
         .catch((err) => {
           console.error(err);
@@ -66,14 +67,11 @@ class Quiz extends React.Component {
   }
 
   nextQuestion() {
-    const { currentQuestion } = this.state;
-    // Wait before switch to the new question let the user see the result
-    // and in the meanwhile fetch a new question
-    Promise.all([this.addQuestion(), this.wait()])
+    this.wait()
       .then(() =>
-        this.setState({
-          currentQuestion: currentQuestion + 1,
-        })
+        this.setState(state => ({
+          currentQuestion: state.currentQuestion + 1,
+        }))
       );
   }
 
@@ -108,6 +106,15 @@ class Quiz extends React.Component {
             color="secondary"
           >
             There's an error in the calling of Musixmatch API, try later please.
+          </Typography>
+        }
+        {!isLoading && !requestError && !question &&
+          <Typography
+            component="div"
+            variant="h5"
+            color="secondary"
+          >
+            There're no question to display.
           </Typography>
         }
         {!isLoading && !requestError && question &&
