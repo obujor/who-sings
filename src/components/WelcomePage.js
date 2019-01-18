@@ -34,6 +34,13 @@ class WelcomePage extends React.Component {
     startGame();
   }
 
+  handleKeyPress = (evt) => {
+    if (evt.key === 'Enter') {
+      evt.preventDefault();
+      this.handleStart();
+    }
+  }
+
   render() {
     const {
       classes,
@@ -68,6 +75,7 @@ class WelcomePage extends React.Component {
               onChange={this.setUsername}
               margin="normal"
               variant="outlined"
+              onKeyPress={this.handleKeyPress}
             />
           </div>
         )}
